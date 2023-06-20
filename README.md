@@ -10,7 +10,7 @@ typedef struct matrix_struct {
     int columns;
 } matrix_t;
 ```
-## Matrix operations
+### Matrix operations
 
 All operations (except matrix comparison) return the resulting code:  
 - 0 - OK
