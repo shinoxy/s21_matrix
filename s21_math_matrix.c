@@ -43,9 +43,8 @@ int s21_determinant(matrix_t *A, double *result) {
     *result = 0;
     for (int i = 0; i < width; i++) {
       matrix_t minor_matrix;
-      s21_create_matrix(width - 1, width - 1, &minor_matrix);
       double minor = 0;
-      s21_get_minor_matrix(*A, 0, i, &minor_matrix);
+      ret = s21_get_minor_matrix(*A, 0, i, &minor_matrix);
       s21_determinant(&minor_matrix, &minor);
       *result += (minor * pow(-1, i)) * A->matrix[0][i];
       s21_remove_matrix(&minor_matrix);
@@ -69,6 +68,7 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
         double minor;
         ret = s21_determinant(&minor_matrix, &minor);
         result->matrix[i][j] = minor * pow(-1, i + j);
+        s21_remove_matrix(&minor_matrix);
       }
     }
   }
@@ -90,13 +90,13 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
     result->columns = width;
     matrix_t complements;
     s21_calc_complements(A, &complements);
-
     double inv_determinant = 1.0 / determinant;
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < width; j++) {
         result->matrix[i][j] = complements.matrix[j][i] * inv_determinant;
       }
     }
+    s21_remove_matrix(&complements);
   }
 
   return ret;
