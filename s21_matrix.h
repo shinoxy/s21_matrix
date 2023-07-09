@@ -2,6 +2,7 @@
 #define SRC_S21_MATRIX_H_
 
 #include <math.h>
+#include <stdio.h>  // УБРАТЬ
 #include <stdlib.h>
 
 // ERROR CODES FOR EQ_MATRIX
@@ -11,7 +12,7 @@
 // ERROR CODES FOR OTHER FUNCTIONS
 #define OK 0
 #define INCORRECT_MATRIX 1
-#define CALCULATION_ERROR 2  // Mismatched sizes; calculations cannot be performed, etc.
+#define CALCULATION_ERROR 2
 
 typedef struct matrix_struct {
   double **matrix;
@@ -19,6 +20,7 @@ typedef struct matrix_struct {
   int columns;
 } matrix_t;
 
+int is_correct(matrix_t *matrix);
 int s21_create_matrix(int rows, int columns, matrix_t *result);
 void s21_remove_matrix(matrix_t *A);
 int s21_eq_matrix(matrix_t *A, matrix_t *B);

@@ -1,5 +1,19 @@
 #include "s21_matrix.h"
 
+int s21_transpose(matrix_t *A, matrix_t *result) {
+  int ret = OK;
+  if (s21_create_matrix(A->columns, A->rows, result) != OK) {
+    ret = INCORRECT_MATRIX;
+  }
+  for (int r = 0; r < A->rows; r++) {
+    for (int c = 0; c < A->columns; c++) {
+      result->matrix[c][r] = A->matrix[r][c];
+    }
+  }
+
+  return ret;
+}
+
 int s21_get_minor_matrix(matrix_t matrix, int row, int col,
                          matrix_t *minor_matrix) {
   int ret = OK;
@@ -67,8 +81,8 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
         s21_get_minor_matrix(*A, i, j, &minor_matrix);
         double minor;
         ret = s21_determinant(&minor_matrix, &minor);
-        result->matrix[i][j] = minor * pow(-1, i + j);
         s21_remove_matrix(&minor_matrix);
+        result->matrix[i][j] = minor * pow(-1, i + j);
       }
     }
   }
@@ -76,28 +90,24 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
 }
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
-  int ret = OK;
-  double determinant = 0;
-  s21_determinant(A, &determinant);
-  if (determinant == 0 ||
-      (s21_create_matrix(A->rows, A->columns, result) != OK)) {
+  int ret = INCORRECT_MATRIX;
+  if (is_correct(A)) {
     ret = CALCULATION_ERROR;
-  } else if (A->rows != A->columns) {
-    ret = INCORRECT_MATRIX;
-  } else {
-    int width = A->rows;
-    result->rows = width;
-    result->columns = width;
-    matrix_t complements;
-    s21_calc_complements(A, &complements);
-    double inv_determinant = 1.0 / determinant;
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < width; j++) {
-        result->matrix[i][j] = complements.matrix[j][i] * inv_determinant;
+    double determinant;
+    s21_determinant(A, &determinant);
+    if (fabs(determinant - 0) > 1e-6) {
+      matrix_t tmp_calc;
+      ret = s21_calc_complements(A, &tmp_calc);
+      if (ret == OK) {
+        matrix_t tmp_trans;
+        ret = s21_transpose(&tmp_calc, &tmp_trans);
+        if (ret == OK) {
+          s21_mult_number(&tmp_trans, 1 / determinant, result);
+        }
+        s21_remove_matrix(&tmp_trans);
       }
+      s21_remove_matrix(&tmp_calc);
     }
-    s21_remove_matrix(&complements);
   }
-
   return ret;
 }

@@ -1,4 +1,4 @@
-CFLAGS =gcc
+CFLAGS = gcc -Wall -Wextra -Werror
 
 ifeq ($(shell uname -s), Linux)
 	LFLAG += -lpthread -lrt -lm -lsubunit
