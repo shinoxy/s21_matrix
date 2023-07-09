@@ -2,7 +2,6 @@
 #define SRC_S21_MATRIX_H_
 
 #include <math.h>
-#include <stdio.h>  // УБРАТЬ
 #include <stdlib.h>
 
 // ERROR CODES FOR EQ_MATRIX
@@ -12,8 +11,7 @@
 // ERROR CODES FOR OTHER FUNCTIONS
 #define OK 0
 #define INCORRECT_MATRIX 1
-#define CALCULATION_ERROR \
-  2  // Mismatched sizes; calculations cannot be performed, etc.
+#define CALCULATION_ERROR 2  // Mismatched sizes; calculations cannot be performed, etc.
 
 typedef struct matrix_struct {
   double **matrix;
