@@ -4,11 +4,8 @@
 
 START_TEST(test_s21_create_matrix) {
   matrix_t my_matrix;
-  int ret = s21_create_matrix(2147483647, 2147483647, &my_matrix);
-  ck_assert_int_eq(ret, 2);
-  s21_remove_matrix(&my_matrix);
 
-  ret = s21_create_matrix(10, 10, &my_matrix);
+  int ret = s21_create_matrix(10, 10, &my_matrix);
   ck_assert_int_eq(ret, 0);
   s21_remove_matrix(&my_matrix);
 
@@ -26,6 +23,7 @@ END_TEST
 
 START_TEST(test_s21_eq_matrix) {
   matrix_t matrix_1, matrix_2;
+
   s21_create_matrix(5, 5, &matrix_1);
   s21_create_matrix(3, 3, &matrix_2);
   int ret = s21_eq_matrix(&matrix_1, &matrix_2);

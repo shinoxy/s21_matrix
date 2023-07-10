@@ -1,5 +1,21 @@
 #include "s21_matrix.h"
 
+int s21_eq_matrix(matrix_t *A, matrix_t *B) {
+  if ((A->rows != B->rows || A->columns != B->columns || A->rows == 0) ||
+      is_correct(A) == FAILURE || is_correct(B) == FAILURE) {
+    return FAILURE;
+  } else {
+    for (int r = 0; r < A->rows; r++) {
+      for (int c = 0; c < A->columns; c++) {
+        if (fabs(A->matrix[r][c] - B->matrix[r][c]) > 1e-6) {
+          return FAILURE;
+        }
+      }
+    }
+  }
+  return SUCCESS;
+}
+
 int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   int ret = OK;
   if (A->columns != B->columns || A->rows != B->rows ||
@@ -27,7 +43,7 @@ int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   } else {
     for (int r = 0; r < A->rows; r++) {
       for (int c = 0; c < A->columns; c++) {
-        result->matrix[c][r] = A->matrix[c][r] - B->matrix[c][r];
+        result->matrix[r][c] = A->matrix[r][c] - B->matrix[r][c];
       }
     }
   }
@@ -43,7 +59,7 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
   }
   for (int r = 0; r < A->rows; r++) {
     for (int c = 0; c < A->columns; c++) {
-      result->matrix[c][r] = A->matrix[c][r] * number;
+      result->matrix[r][c] = A->matrix[r][c] * number;
     }
   }
   return OK;

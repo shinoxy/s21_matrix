@@ -2,7 +2,6 @@
 #define SRC_S21_MATRIX_H_
 
 #include <math.h>
-#include <stdio.h>  // УБРАТЬ
 #include <stdlib.h>
 
 // ERROR CODES FOR EQ_MATRIX
